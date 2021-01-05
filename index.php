@@ -26,7 +26,8 @@
 
             <div class="text-center mt-3">
                 <input class="btn btn-success col-12" type="submit" value="Login">
-                <a class="btn btn-danger col-12 mt-1" href="register.php">!debug-register</a>
+                <!-- DEBUG -->
+                <!-- <a class="btn btn-danger col-12 mt-1" href="register.php">!debug-register</a> -->
             </div>
 
 

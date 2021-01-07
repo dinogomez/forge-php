@@ -37,6 +37,8 @@
                 <ul>
                     <li class="header-menu"><span>General</span></li>
                     <li><a href="../dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
+                    <li><a href="../menu.php"><i class="fas fa-plus-square"></i><span>Create Menu Profile</span></a>
+                    </li>
 
                     <li class="sidebar-dropdown">
                         <a href="#"><i class="fa fa-dashboard"></i><span>File Management</span></a>

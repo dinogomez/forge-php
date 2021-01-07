@@ -5,100 +5,110 @@ require_once '../model/db.php';
 session_start();
 
 $uid = $_SESSION['uid'];
-echo 'UID'.$uid.'<br>';
-// [PROFILE ID]
-$prof_id = 0;
+$prof_id;
 
 
-// [Prof_ID] Retrieval Start
-$query = "SELECT prof_id FROM users WHERE uid='$uid'";
-$result = $conn->query($query);
+
+// echo 'UID: '.$uid.'<br>';
+
+// [PROF ID RETRIEVAL] START
+$sql = "SELECT prof_id FROM users WHERE uid='$uid'";
+$result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
     $prof_id = $row['prof_id'];
-    echo "PROF_ID:".$prof_id.'<br>';
+    // echo 'PROF_ID: '.$prof_id.'<br>';
+
   }
 } else {
   echo "0 results";
 }
-// [Prof_ID] Retrieval End
+// [PROF ID RETRIEVAL] END
+
+function array_push_assoc($array, $key, $value){
+  $array[$key] = $value;
+  return $array;
+}
 
 
-// [Serialized Menu] Retrieval Start
-// [MENU GROUP]
-$menugroup = "";
 
-$query = "SELECT menugroup, FROM profile WHERE prof_id='$prof_id'";
-$result = $conn->query($query);
+// [MENU RETRIEVAL] START
+// [CHILD RETRIEVAL]
+$subMenus = array("File Management" => "Hello");
+$sql = "SELECT *, menu.execute as execute FROM profileModules
+INNER JOIN menu
+ON profileModules.menu = menu.menu WHERE prof_id = '$prof_id' and type = 'submenu'";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // output data of each row
+  
+  while($row = $result->fetch_assoc()) {
+
+    $href = "../";
+    if(is_null($row['execute'])){
+      $row['execute'] = '#';
+    } else {
+      $href = "../".$row['execute'];
+    }
+    $menu = $row['menu'];
+    $parent = $row['parent'];
+    $value = '<li><a href="'.$href.'">'.$row['menu'].'</a></li>';
+
+    $subMenus = array_push_assoc($subMenus, $parent, $value);
+
+  }
+  // foreach($subMenus as $x => $x_value) {
+  //   echo "Key=" . $x . ", Value=" . $x_value;
+  //   echo "<br>";
+  // }
+}
+
+
+$sql = "SELECT *, menu.icon as icon, menu.execute as execute FROM profileModules
+INNER JOIN menu
+ON profileModules.menu = menu.menu WHERE prof_id = '$prof_id'";
+
+$result = $conn->query($sql);
+
+
 
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
-    echo "Serialized: ".$row['menugroup'].'<br>';
-    $menugroup = unserialize($row['menugroup']);
-    echo "Unserialized: ".var_dump($menugroup).'<br>';
+    if($row['type'] == 'header'){
+      $href = "../";
+    if(is_null($row['execute'])){
+      $row['execute'] = '#';
+    } else {
+      $href = "../".$row['execute'];
+    }
+
+    $menu = $row['menu'];
+    $icon = $row['icon'];
+
+    echo '<li class="sidebar-dropdown">
+            <a href="'.$href.'"><i class="'.$icon.'"></i></i><span>'.$menu.'</span></a>
+            <div class="sidebar-submenu">
+                            <ul>';
+            
+            foreach($subMenus as $x => $x_value) {
+              if($x == $menu){
+                echo $x_value;
+              }
+            }
+    echo  ' </ul>
+    </div></li>';
+    }
   }
-} else {
-  echo "0 results";
-}
+} 
 
-// ICON RETRIEVAL
-$fa_icon = "";
-$query = "SELECT icon FROM menu WHERE menuGroup='$menugroup'";
-$result = $conn->query($query);
-
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    $fa_icon = $row['icon'];
-  }
-} else {
-  echo "0 results";
-}
-
-// [Serialized Menu] Retrieval End
-
-
-// [Module] Retrieval Start
-
-// [Module] Retrieval End
-
-// [Parsing Menu Array] Start
-
-// [Parsing Menu Array] End
-
-
-
-
-   echo '<li class="sidebar-dropdown">
-  <a href="#"><i class="'.$fa_icon.'"></i><span>'.$menuGroup.'</span></a>
-  <div class="sidebar-submenu">
-      <ul>';
-
-      $query = "SELECT moduleName, moduleProcess FROM modules WHERE menuGroup='$menugroup'";
-        $result = $conn->query($query);
-
-        if ($result->num_rows > 0) {
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-            echo '<li><a href="'.$moduleProcess.'">'.$row['moduleName'].'</a></li>';
-        }
-        } else {
-        echo "0 results";
-        }
-
-     
-     
-     
-          echo '</ul>
-  </div>
-</li>';
-
+// [Menu RETRIEVAL] END
 
  
-
 
 
     

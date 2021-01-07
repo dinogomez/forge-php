@@ -36,72 +36,122 @@
             <div class="sidebar-menu">
                 <ul>
                     <li class="header-menu"><span>General</span></li>
-                    <li><a href="../dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li><a href="../menu.php"><i class="fas fa-plus-square"></i><span>Create Menu Profile</span></a>
-                    </li>
+                    <?php
 
-                    <li class="sidebar-dropdown">
-                        <a href="#"><i class="fa fa-dashboard"></i><span>File Management</span></a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="#">Dir Management<span class="label label-success">Admin</span></a>
-                                </li>
-                                <li><a href="#">Records</a></li>
-                                <li><a href="#">Logs</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <!-- <li class="sidebar-dropdown">
-                        <a href="#"><i class="fa fa-shopping-cart"></i><span>E-commerce</span><span
-                                class="badge">3</span></a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="#">Products<span class="badge">2</span></a></li>
-                                <li><a href="#">Orders</a></li>
-                                <li><a href="#">Credit cart</a></li>
-                            </ul>
-                        </div>
-                    </li> -->
-                    <!-- <li class="sidebar-dropdown">
-                        <a href="#"><i class="fa fa-diamond"></i><span>Components</span></a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="#">General</a></li>
-                                <li><a href="#">Panels</a></li>
-                                <li><a href="#">Tables</a></li>
-                                <li><a href="#">Icons</a></li>
-                                <li><a href="#">Forms</a></li>
-                            </ul>
-                        </div>
-                    </li> -->
-                    <li class="sidebar-dropdown">
-                        <a href="#"><i class="fa fa-bar-chart-o"></i><span>User Management</span></a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="../register.php">User Add</a></li>
-                                <li><a href="#">User Statistics</a></li>
-                                <li><a href="#">User Control</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="sidebar-dropdown">
-                        <a href="#"><i class="fa fa-globe"></i><span>GPS</span></a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="#">Ships</a></li>
-                                <li><a href="#">Trucks</a></li>
-                            </ul>
-                        </div>
-                    </li>
+    require_once 'model/db.php';
 
 
-                    <li class="header-menu"><span>Others</span></li>
+    $uid = $_SESSION['uid'];
+    $prof_id;
 
-                    <li><a href="#"><i class="fa fa-calendar"></i><span>Calendar</span></a></li>
-                    <li><a href="#"><i class="fa fa-folder"></i><span>Files</span></a></li>
 
-                    <li><a href="#"><i class="fa fa-book"></i><span>Documentation</span></a></li>
+
+    // echo 'UID: '.$uid.'<br>';
+
+    // [PROF ID RETRIEVAL] START
+    $sql = "SELECT prof_id FROM users WHERE uid='$uid'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        $prof_id = $row['prof_id'];
+        // echo 'PROF_ID: '.$prof_id.'<br>';
+
+    }
+    } else {
+    echo "0 results";
+    }
+    // [PROF ID RETRIEVAL] END
+
+    function array_push_assoc($array, $key, $value){
+    $array[$key] = $value;
+    return $array;
+    }
+
+
+
+    // [MENU RETRIEVAL] START
+    // [CHILD RETRIEVAL]
+    $subMenus = array("File Management" => "Hello");
+    $sql = "SELECT *, menu.execute as execute FROM profileModules
+    INNER JOIN menu
+    ON profileModules.menu = menu.menu WHERE prof_id = '$prof_id' and type = 'submenu'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+    // output data of each row
+    
+    while($row = $result->fetch_assoc()) {
+
+        $href = "../";
+        if(is_null($row['execute'])){
+        $row['execute'] = '#';
+        } else {
+        $href = "../".$row['execute'];
+        }
+        $menu = $row['menu'];
+        $parent = $row['parent'];
+        $value = '<li><a href="'.$href.'">'.$row['menu'].'</a></li>';
+
+        $subMenus = array_push_assoc($subMenus, $parent, $value);
+
+    }
+    // foreach($subMenus as $x => $x_value) {
+    //   echo "Key=" . $x . ", Value=" . $x_value;
+    //   echo "<br>";
+    // }
+    }
+
+
+    $sql = "SELECT *, menu.icon as icon, menu.execute as execute FROM profileModules
+    INNER JOIN menu
+    ON profileModules.menu = menu.menu WHERE prof_id = '$prof_id'";
+
+    $result = $conn->query($sql);
+
+
+
+    if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        if($row['type'] == 'header'){
+        $href = "../";
+        if(is_null($row['execute'])){
+        $row['execute'] = '#';
+        $href = '#';
+        } else {
+        $href = "../".$row['execute'];
+        }
+
+        $menu = $row['menu'];
+        $icon = $row['icon'];
+
+        echo '<li class="sidebar-dropdown">
+                <a href="'.$href.'"><i class="'.$icon.'"></i></i><span>'.$menu.'</span></a>
+                <div class="sidebar-submenu">
+                                <ul>';
+                
+                foreach($subMenus as $x => $x_value) {
+                if($x == $menu){
+                    echo $x_value;
+                }
+                }
+        echo  ' </ul>
+        </div></li>';
+        }
+    }
+    } 
+
+    // [Menu RETRIEVAL] END
+
+    
+
+
+        
+    ?>
+
                 </ul>
             </div>
             <!-- sidebar-menu  -->

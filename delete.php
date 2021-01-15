@@ -1,13 +1,16 @@
 <?php
     session_start();
-    require_once 'controller/tool/CheckLogin.php';
+    if(!isset($_SESSION['uid'])){
+        session_destroy();
+        header('Location: index.php');
+    }
     require_once 'view/layouts/header.php';
 ?>
 <?php
     require_once 'view/components/sidebar.php';
 ?>
 <?php
-        require_once 'view/components/content/dashContent.php';
+        require_once 'view/components/content/deleteContent.php';
     ?>
 
 <?php

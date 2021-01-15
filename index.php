@@ -1,4 +1,9 @@
 <?php
+    session_start();
+    if(isset($_SESSION['uid'])){
+
+        header('Location: dashboard.php');
+    }
     require_once 'view/layouts/header.php';
 ?>
 <link rel="stylesheet" href="view/css/login.css">

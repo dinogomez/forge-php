@@ -22,6 +22,14 @@
                 </button>
             </div>
 
+            <style>
+            .scrolldown {
+
+                overflow-y: scroll
+            }
+
+            ;
+            </style>
             <!-- Modal -->
             <div class="modal fade" id="AddProfile" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
@@ -31,7 +39,31 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            ...
+                            <form>
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput" class="ml-2">Menu Name</label>
+                                    <input type="text" name="menuName" class="form-control" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput" class="ml-2">Description</label>
+                                    <textarea class="form-control" aria-label="With textarea"></textarea>
+
+                                </div>
+                                <label for="formGroupExampleInput" class="ml-2">Menu</label>
+
+                                <div class="scrolldown form-control">
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                    <input type="checkbox" /> This is checkbox <br />
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -49,22 +81,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Encoder</td>
-                        <td class="edge">
-                            <a class="mx-2" href="#"><i class="fas fa-edit text-primary fs-5"></i></a>
-                            <a class="mx-2" href="#"><i class="fas fa-trash text-danger fs-5"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>GPS</td>
-                        <td class="edge">
-                            <a class="mx-2" href="#"><i class="fas fa-edit text-primary fs-5"></i></a>
-                            <a class="mx-2" href="#"><i class="fas fa-trash text-danger fs-5"></i></a>
-                        </td>
-                    </tr>
+                    <?php
+                        require_once 'controller/LoadMenuProfiles.php';
+                    ?>
 
 
                 </tbody>

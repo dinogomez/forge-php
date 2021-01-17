@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+// session_start(); Commented due to warning
 
 
   $server = "127.0.0.1";

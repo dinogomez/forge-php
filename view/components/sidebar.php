@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    // session_start(); Commented due to warning
 ?>
 
 <div class="page-wrapper toggled">

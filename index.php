@@ -20,11 +20,11 @@
         <form action="controller/LoginController.php" method="POST">
             <div class="form-group">
                 <label for="formGroupExampleInput">User ID</label>
-                <input type="number" name="uid" class="form-control number-noarrow" placeholder="Username">
+                <input type="number" name="uid" class="form-control number-noarrow" placeholder="">
             </div>
             <div class="form-group">
                 <label for="formGroupExampleInput2">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="">
             </div>
 
             <hr class="my-2">

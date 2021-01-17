@@ -43,8 +43,19 @@
                         <label for="formGroupExampleInput2">Profile</label>
                         <select name="prof_id" class="form-control" required>
                             <option class="text-gray-200" value="" selected disabled hidden>Choose Profile</option>
-                            <option class="text-gray" value="1">Admin</option>
-                            <option class="text-gray" value="2">Default</option>
+
+                            <?php 
+                                
+                                $sql = "SELECT * FROM profile";
+                                $result = $conn->query($sql);
+                                
+                                if ($result->num_rows > 0) {
+                                  // output data of each row
+                                  while($row = $result->fetch_assoc()) {
+                                echo '<option class="text-gray" value="'.$row['id'].'">'.$row['label'].'</option>';
+                                  }
+                                } 
+                            ?>
                         </select>
                     </div>
                     <div class="form-group pt-2">

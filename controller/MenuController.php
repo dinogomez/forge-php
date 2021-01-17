@@ -36,9 +36,9 @@ return $array;
 // [MENU RETRIEVAL] START
 // [CHILD RETRIEVAL]
 $subMenus = array("File Management" => "Hello");
-$sql = "SELECT *, menu.execute as execute FROM profileModules
+$sql = "SELECT *,menu.parent, menu.execute as execute FROM profileModules
 INNER JOIN menu
-ON profileModules.menu = menu.menu WHERE prof_id = '$prof_id' and type = 'submenu'";
+ON profileModules.menu = menu.menu WHERE prof_id = '$prof_id' and menuType = 'submenu'";
 
 $result = $conn->query($sql);
 
@@ -78,7 +78,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 // output data of each row
 while($row = $result->fetch_assoc()) {
-    if($row['type'] == 'header'){
+    if($row['menuType'] == 'header'){
     $href = "../";
     if(is_null($row['execute'])){
     $row['execute'] = '#';

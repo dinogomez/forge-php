@@ -11,7 +11,7 @@
 ?>
 <?php
         require_once 'view/components/content/menuContent.php';
-    ?>
+?>
 
 <?php
     require_once 'view/layouts/footer.php';

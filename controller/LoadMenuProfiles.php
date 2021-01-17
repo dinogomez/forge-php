@@ -1,6 +1,7 @@
 <?php
    require 'controller/tool/CheckLogin.php';
-   
+   require 'controller/tool/deleteProfile.php';
+
    $sql = "SELECT * FROM profile";
    $result = $conn->query($sql);
    
@@ -11,8 +12,8 @@
             <th scope="row">'.$row['id'].'</th>
             <td>'.$row['label'].'</td>
             <td class="edge">
-                <a class="mx-2" href="delete.php"><i class="fas fa-edit text-primary fs-5"></i></a>
-                <a class="mx-2" href="#"><i class="fas fa-trash text-danger fs-5"></i></a>
+                <a class="mx-2" href="#"><i class="fas fa-edit text-primary fs-5"></i></a>
+                <a class="mx-2" href="controller/tool/deleteProfile.php?id='.$row['id'].'"><i class="fas fa-trash text-danger fs-5"></i></a>
             </td>
         </tr>';
    
